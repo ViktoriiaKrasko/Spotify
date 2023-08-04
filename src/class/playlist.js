@@ -45,6 +45,19 @@ class Playlist {
       (track) => track.id !== trackId,
     )
   }
+
+  static findListByValue(name) {
+    return this.#list.filter((playlist) =>
+      playlist.name
+        .toLowerCase()
+        .includes(name.toLowerCase()),
+    )
+  }
 }
+
+Playlist.makeMix(Playlist.create('Romantic'))
+Playlist.makeMix(Playlist.create('Piano'))
+Playlist.makeMix(Playlist.create('Cello'))
+Playlist.makeMix(Playlist.create('Cover'))
 
 module.exports = Playlist

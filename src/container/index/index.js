@@ -1,3 +1,3 @@
-import '../../script/test'
+// import '../../script/test'
 
 // console.log('container')

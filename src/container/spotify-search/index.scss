@@ -1,0 +1,61 @@
+@use '../../style' as s;
+
+.search {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  justify-content: space-evenly;
+  justify-items: start;
+  background-color: #292929;
+  padding: s.space(2) s.space(10);
+  gap: s.space(8);
+  color: s.color(light);
+
+  &__input {
+    font-size: 24px;
+  }
+
+  &__button {
+    color: s.color(light);
+    transition: opacity 0.6s;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  &__playlists {
+    display: grid;
+    gap: s.space(4);
+
+    &--item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: s.space(8);
+      align-items: center;
+    }
+
+    &--text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: s.space(2);
+    }
+  }
+
+  &__message {
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+.playlist__name {
+  color: s.color(light);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.playlist__tracks {
+  color: s.color(text);
+  font-size: 16px;
+  font-weight: 400;
+}

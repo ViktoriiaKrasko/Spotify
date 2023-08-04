@@ -7,12 +7,10 @@ const Track = require('../class/track')
 const Playlist = require('../class/playlist')
 
 // ================================================================
-
-// router.get Створює нам один ентпоїнт
-
-// ↙️ тут вводимо шлях (PATH) до сторінки
 router.get('/', function (req, res) {
   // res.render генерує нам HTML сторінку
+
+  const playlist = Playlist.getList()
 
   // ↙️ cюди вводимо назву файлу з сontainer
   res.render('index', {
@@ -27,17 +25,96 @@ router.get('/', function (req, res) {
 
     // вказуємо дані,
     data: {
-      // test: new Test().test,
+      playlist: playlist,
     },
   })
   // ↑↑ сюди вводимо JSON дані
 })
 
 // ================================================================
+router.get('/spotify-search', function (req, res) {
+  // res.render генерує нам HTML сторінку
 
-// router.get Створює нам один ентпоїнт
+  const value = ''
 
-// ↙️ тут вводимо шлях (PATH) до сторінки
+  const list = Playlist.findListByValue(value)
+
+  // ↙️ cюди вводимо назву файлу з сontainer
+  res.render('spotify-search', {
+    // вказуємо назву контейнера
+    name: 'spotify-search',
+    // вказуємо назву компонентів
+    // component: ['heading'],
+
+    // вказуємо назву сторінки
+    title: 'Spotify',
+    // ... сюди можна далі продовжувати додавати потрібні технічні дані, які будуть використовуватися в layout
+
+    // вказуємо дані,
+    data: {
+      list: list.map(({ tracks, ...rest }) => ({
+        ...rest,
+        count: tracks.length,
+      })),
+      value,
+    },
+  })
+  // ↑↑ сюди вводимо JSON дані
+})
+
+// ================================================================
+router.post('/spotify-search', function (req, res) {
+  // res.render генерує нам HTML сторінку
+
+  const value = req.body.value || ''
+
+  const list = Playlist.findListByValue(value)
+
+  // ↙️ cюди вводимо назву файлу з сontainer
+  res.render('spotify-search', {
+    // вказуємо назву контейнера
+    name: 'spotify-search',
+    // вказуємо назву компонентів
+    // component: ['heading'],
+
+    // вказуємо назву сторінки
+    title: 'Spotify',
+    // ... сюди можна далі продовжувати додавати потрібні технічні дані, які будуть використовуватися в layout
+
+    // вказуємо дані,
+    data: {
+      list: list.map(({ tracks, ...rest }) => ({
+        ...rest,
+        count: tracks.length,
+      })),
+      value,
+    },
+  })
+  // ↑↑ сюди вводимо JSON дані
+})
+// ================================================================
+
+router.get('/spotify-choose', function (req, res) {
+  // res.render генерує нам HTML сторінку
+
+  // ↙️ cюди вводимо назву файлу з сontainer
+  res.render('spotify-choose', {
+    // вказуємо назву контейнера
+    name: 'spotify-choose',
+    // вказуємо назву компонентів
+    // component: ['heading'],
+
+    // вказуємо назву сторінки
+    title: 'Spotify',
+    // ... сюди можна далі продовжувати додавати потрібні технічні дані, які будуть використовуватися в layout
+
+    // вказуємо дані,
+    data: {},
+  })
+  // ↑↑ сюди вводимо JSON дані
+})
+
+//===========================================================================
 router.get('/spotify-create', function (req, res) {
   // res.render генерує нам HTML сторінку
   const isMix = !!req.query.isMix
@@ -63,7 +140,6 @@ router.get('/spotify-create', function (req, res) {
 })
 
 //===========================================================================
-
 router.post('/spotify-create', function (req, res) {
   // res.render генерує нам HTML сторінку
   const isMix = !!req.query.isMix
@@ -116,16 +192,10 @@ router.post('/spotify-create', function (req, res) {
 })
 
 // ================================================================
-
-// router.get Створює нам один ентпоїнт
-
-// ↙️ тут вводимо шлях (PATH) до сторінки
 router.get('/spotify-playlist', function (req, res) {
   // res.render генерує нам HTML сторінку
   const id = Number(req.query.id)
   const playlist = Playlist.getById(id)
-
-  console.log(playlist)
 
   if (!playlist) {
     res.render('alert', {
@@ -160,10 +230,6 @@ router.get('/spotify-playlist', function (req, res) {
 })
 
 // ================================================================
-
-// router.get Створює нам один ентпоїнт
-
-// ↙️ тут вводимо шлях (PATH) до сторінки
 router.get('/spotify-track-delete', function (req, res) {
   // res.render генерує нам HTML сторінку
   const playlistId = Number(req.query.playlistId)
@@ -207,12 +273,10 @@ router.get('/spotify-track-delete', function (req, res) {
 })
 
 // ================================================================
-
-// router.get Створює нам один ентпоїнт
-
-// ↙️ тут вводимо шлях (PATH) до сторінки
 router.get('/spotify-track-add', function (req, res) {
   // res.render генерує нам HTML сторінку
+  const playlistId = Number(req.query.playlistId)
+  const playlist = Playlist.getById(playlistId)
 
   const allTracks = Track.getList()
 
@@ -229,24 +293,21 @@ router.get('/spotify-track-add', function (req, res) {
 
     // вказуємо дані,
     data: {
+      playlistId: playlist.id,
       tracks: allTracks,
     },
   })
   // ↑↑ сюди вводимо JSON дані
 })
 
+// ================================================================
 router.get('/spotify-track-new', function (req, res) {
   // res.render генерує нам HTML сторінку
   const playlistId = Number(req.query.playlistId)
   const trackId = Number(req.query.trackId)
 
-  console.log(playlistId)
-  console.log(trackId)
-
   const playlist = Playlist.getById(playlistId)
   const trackToAdd = Track.getById(trackId)
-
-  console.log(trackToAdd)
 
   if (playlist && trackToAdd) {
     playlist.tracks.push(trackToAdd)

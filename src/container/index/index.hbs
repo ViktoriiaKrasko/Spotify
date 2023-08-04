@@ -3,31 +3,33 @@
 в якому міститься код, котрий буде віддаватися по шляху (PATH) - "/"
 }}
 
-<main class="main">
-    <div class="main__content">
-        <h1 class="title title--center">Create</h1>
-        <ul class="choose">
-            <a href="/spotify-create">
-                <li class="choose__item">
-                    <img src="/svg/note.svg" alt="Note" class="choose__image">
-                    <div class="choose__content">
-                        <strong class="title">Playlist</strong>
-                        <p class="choose__text">Create playlist with soundtracks or compositions</p>
-                    </div>
-                </li>
-            </a>
-            <a href="/spotify-create?isMix=true">
-                <li class="choose__item">
-                    <img src="/svg/mix.svg" alt="Two circles" class="choose__image">
-                    <div class="choose__content">
-                        <strong class="title">Mix</strong>
-                        <p class="choose__text">Create a shared playlist of favorite songs</p>
-                    </div>
-                </li>
-            </a>
-        </ul>
+<main class='main'>
+    {{#with data}}
+    <div class='main__content'>
+        <div class='library'>
+            <h1 class='title title--center'>My Playlists</h1>
+            <div class='library__images'>
+                <a href='/spotify-search'><img src='/svg/search.svg' alt='search' /></a>
+                <a href='/spotify-choose'><img src='/svg/addPlaylist.svg' alt='add' /></a>
+            </div>
+        </div>
 
-    </div>
+        <div class='library__playlists'>
+            {{#if playlist}}
+            {{#each playlist}}
+            <a href="/spotify-playlist?id={{id}}">
+                <div class='library__playlists--item'>
+                    <img src='https://picsum.photos/id/237/200/200' alt='logo' height="200px" />
+                    <div class='playlist__name'>{{name}}</div>
+                    <div class='playlist__tracks'>{{tracks.length}} tracks</div>
+                </div>
+            </a>
+            {{/each}}
+            {{else}}
+            <div class="library__message">Add new playlists</div>
+            {{/if}}
+        </div>
+        {{/with}}
 </main>
 
 {{!
