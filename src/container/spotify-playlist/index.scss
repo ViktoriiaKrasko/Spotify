@@ -1,0 +1,16 @@
+@use '../../style' as s;
+
+.title {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.add-button {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  gap: s.space(6);
+  color: s.color(light);
+  font-size: 24px;
+  font-weight: 500;
+}
